@@ -32,6 +32,11 @@ public class OrderController {
         return new ResponseEntity<>(orderService.save(order),HttpStatus.CREATED);
     }
 
+    @PutMapping()
+    public ResponseEntity<OrderDto> update(@RequestBody OrderDto order) {
+        return new ResponseEntity<>(orderService.save(order),HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") Integer id) {
         try{
