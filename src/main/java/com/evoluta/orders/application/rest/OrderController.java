@@ -1,6 +1,7 @@
 package com.evoluta.orders.application.rest;
 
 import com.evoluta.orders.application.response.OrderDto;
+import com.evoluta.orders.application.util.Log;
 import com.evoluta.orders.domain.service.OrderService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -11,57 +12,64 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/order")
 public class OrderController {
+    private static final String ERROR = "Error : %s";
     @Autowired
     private OrderService orderService;
-    Logger LOG = LoggerFactory.getLogger(OrderController.class);
     @GetMapping(value = "/")
     @ApiOperation("Get all orders")
     @ApiResponses({
             @ApiResponse(code = 200,message = "ok"),
-            @ApiResponse(code = 404,message = "Orders not found")
+            @ApiResponse(code = 404,message = "Orders not found"),
+            @ApiResponse(code = 400,message = "Bad Request")
     })
     public ResponseEntity<List<OrderDto> > findAll(){
         try{
-            return new ResponseEntity<>(orderService.findAll(), HttpStatus.OK);
+            List<OrderDto> orders = orderService.findAll();
+            HttpStatus httpStatus = HttpStatus.OK;
+            if(orders.size() == 0){
+                httpStatus = HttpStatus.NOT_FOUND;
+            }
+            return new ResponseEntity<>(orders, httpStatus);
         }catch (Exception e){
-            LOG.error("Error : " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            Log.info(String.format(ERROR,e.getMessage()));
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "orders not found", e);
         }
     }
 
     @PostMapping()
-    @ApiOperation("save one order with an id")
+    @ApiOperation("save one order")
     @ApiResponses({
-            @ApiResponse(code = 200,message = "ok"),
+            @ApiResponse(code = 201,message = "created"),
             @ApiResponse(code = 400,message = "Bad request")
     })
     public ResponseEntity<OrderDto> save(@RequestBody OrderDto order) {
         try{
-            return new ResponseEntity<>(orderService.save(order),HttpStatus.OK);
+            return new ResponseEntity<>(orderService.save(order),HttpStatus.CREATED);
         }catch(Exception e){
-            LOG.error("Error : " + e.getMessage());
-            return new ResponseEntity<>(orderService.save(order),HttpStatus.BAD_REQUEST);
+            Log.info(String.format(ERROR,e.getMessage()));
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping()
-    @ApiOperation("update one order with an id")
+    @ApiOperation("update one order")
     @ApiResponses({
-            @ApiResponse(code = 200,message = "ok"),
+            @ApiResponse(code = 201,message = "Created"),
             @ApiResponse(code = 400,message = "Bad request")
     })
     public ResponseEntity<OrderDto> update(@RequestBody OrderDto order) {
         try{
-            return new ResponseEntity<>(orderService.save(order),HttpStatus.OK);
+            return new ResponseEntity<>(orderService.save(order),HttpStatus.CREATED);
         }catch(Exception e){
-            LOG.error("Error : " + e.getMessage());
-            return new ResponseEntity<>(orderService.save(order),HttpStatus.BAD_REQUEST);
+            Log.info(String.format(ERROR,e.getMessage()));
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -76,8 +84,8 @@ public class OrderController {
             orderService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch(Exception e){
-            LOG.error("Error : " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            Log.info(String.format(ERROR,e.getMessage()));
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "orders not found", e);
         }
     }
     @GetMapping("/{id}")
@@ -87,9 +95,12 @@ public class OrderController {
             @ApiResponse(code = 404,message = "Not found")
     })
     public ResponseEntity<OrderDto> getOrderById(@PathVariable("id") Integer id) {
-        return orderService.findById(id)
-                .map(order -> new ResponseEntity<>(order,HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        try{
+            return new ResponseEntity<>(orderService.findById(id),HttpStatus.OK);
+        }catch(Exception e){
+            Log.info(String.format(ERROR,e.getMessage()));
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

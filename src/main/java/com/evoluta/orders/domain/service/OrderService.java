@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface OrderService {
     List<OrderDto> findAll();
     OrderDto save(OrderDto order);
-    Optional<OrderDto> findById(Integer id);
-    void deleteById(Integer id);
+    OrderDto findById(Integer id);
+    boolean deleteById(Integer id);
 }

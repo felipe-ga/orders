@@ -17,8 +17,8 @@ public class OrderServiceImpl  implements OrderService {
     @Override
     public List<OrderDto> findAll() {
         List<OrderDto> orders = orderRepository.findAll();
-        orders.stream().forEach(x -> x.getOrders().stream().forEach(o -> o.setTotal(o.getUnit() * o.getPrice())));
-        orders.stream().forEach(order -> order.setTotal(order.getOrders().stream().mapToDouble(o -> o.getTotal()).sum()));
+        orders.stream().filter(o -> o.getOrders().size() > 0).forEach(x -> x.getOrders().stream().forEach(o -> o.setTotal(o.getUnit() * o.getPrice())));
+        orders.stream().filter(o -> o.getOrders().size() > 0).forEach(order -> order.setTotal(order.getOrders().stream().mapToDouble(o -> o.getTotal()).sum()));
         return orders;
     }
 
@@ -28,12 +28,12 @@ public class OrderServiceImpl  implements OrderService {
     }
 
     @Override
-    public Optional<OrderDto> findById(Integer id) {
+    public OrderDto findById(Integer id) {
         return  orderRepository.findById(id);
     }
 
     @Override
-    public void deleteById(Integer id) {
-        orderRepository.deleteById(id);
+    public boolean deleteById(Integer id) {
+        return orderRepository.deleteById(id);
     }
 }

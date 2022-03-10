@@ -31,7 +31,7 @@ public class OrderRepositoryImpl implements OrderRepository{
     }
 
     @Override
-    public OrderDto save(OrderDto order) {
+    public OrderDto  save(OrderDto order) {
         try{
             OrderEntity orderEntity = orderMapper.toOrderEntity(order);
             orderEntity.getOrders().forEach(o -> o.setOrderEntity(orderEntity));
@@ -43,12 +43,17 @@ public class OrderRepositoryImpl implements OrderRepository{
     }
 
     @Override
-    public Optional<OrderDto> findById(Integer id) {
-        return orderRepositoryCrud.findById(id).map(o -> orderMapper.toOrderDto(o));
+    public OrderDto findById(Integer id) {
+        return orderRepositoryCrud.findById(id).map(o -> orderMapper.toOrderDto(o)).get();
     }
 
     @Override
-    public void deleteById(Integer id) {
-        orderRepositoryCrud.deleteById(id);
+    public boolean deleteById(Integer id) {
+        try{
+            orderRepositoryCrud.deleteById(id);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
 }
