@@ -1,7 +1,5 @@
 package com.evoluta.orders.domain.repository;
 
-import com.evoluta.orders.application.response.OrderLineDto;
-import com.evoluta.orders.infrastructure.entity.OrderEntity;
 import com.evoluta.orders.infrastructure.entity.OrderLineEntity;
 import org.springframework.data.repository.CrudRepository;
 

@@ -2,7 +2,6 @@ package com.evoluta.orders.infrastructure.entity;
 
 
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 

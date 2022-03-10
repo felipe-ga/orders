@@ -4,7 +4,6 @@ import com.evoluta.orders.infrastructure.entity.OrderEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface OrderRepositoryCrud extends CrudRepository<OrderEntity, Integer> {
     List<OrderEntity> findAll();

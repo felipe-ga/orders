@@ -4,7 +4,6 @@ import com.evoluta.orders.infrastructure.entity.OrderEntity;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Set;
 
 @Getter
 @Setter

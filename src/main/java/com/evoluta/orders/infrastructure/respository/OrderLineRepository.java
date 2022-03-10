@@ -1,6 +1,4 @@
 package com.evoluta.orders.infrastructure.respository;
-
-import com.evoluta.orders.application.response.OrderDto;
 import com.evoluta.orders.application.response.OrderLineDto;
 
 import java.util.List;

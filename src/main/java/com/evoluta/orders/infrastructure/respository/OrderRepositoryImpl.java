@@ -1,10 +1,8 @@
 package com.evoluta.orders.infrastructure.respository;
 
 import com.evoluta.orders.application.response.OrderDto;
-import com.evoluta.orders.application.rest.OrderController;
 import com.evoluta.orders.domain.repository.OrderRepositoryCrud;
 import com.evoluta.orders.infrastructure.entity.OrderEntity;
-import com.evoluta.orders.infrastructure.entity.OrderLineEntity;
 import com.evoluta.orders.infrastructure.respository.mapper.OrderLineMapper;
 import com.evoluta.orders.infrastructure.respository.mapper.OrderMapper;
 import org.slf4j.Logger;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
