@@ -19,5 +19,6 @@ import java.util.Set;
 public interface OrderMapper {
     OrderEntity toOrderEntity(OrderDto orderEntity);
     OrderDto toOrderDto(OrderEntity orderEntity);
-    List<OrderDto> toOrdersDto(List<OrderEntity> orders);
+    List<OrderDto> toListOrdersDto(List<OrderEntity> orders);
+    List<OrderEntity> toListOrdersEntity(List<OrderDto> orders);
 }

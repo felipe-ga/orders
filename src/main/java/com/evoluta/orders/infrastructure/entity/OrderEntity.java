@@ -1,6 +1,7 @@
 package com.evoluta.orders.infrastructure.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -27,7 +28,8 @@ public class OrderEntity {
     @Column(name = "customer_email")
     private String customerEmail;
 
-    @OneToMany(mappedBy = "orderEntity")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderEntity")
     @OnDelete( action = OnDeleteAction.CASCADE )
-    private Set<OrderLineEntity> orders;
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private List<OrderLineEntity> orders;
 }

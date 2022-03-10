@@ -2,6 +2,7 @@ package com.evoluta.orders.infrastructure.entity;
 
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -30,7 +31,7 @@ public class OrderLineEntity {
     private Integer unit;
     private Float price;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name="order_id", nullable = false, insertable = false, updatable = false)
     private OrderEntity orderEntity;
 }
