@@ -1,6 +1,8 @@
 package com.evoluta.orders.infrastructure.entity;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -26,5 +28,6 @@ public class OrderEntity {
     private String customerEmail;
 
     @OneToMany(mappedBy = "orderEntity")
+    @OnDelete( action = OnDeleteAction.CASCADE )
     private Set<OrderLineEntity> orders;
 }
