@@ -33,7 +33,9 @@ public class OrderRepositoryImpl implements OrderRepository{
     public OrderDto save(OrderDto order) {
         try{
             OrderEntity orderEntity = orderMapper.toOrderEntity(order);
-            orderEntity.setOrders(order.getOrders().stream().map(x -> orderLineMapper.toOrderLineEntity(x)).collect(Collectors.toList()));
+            if(order.getOrders() != null && order.getOrders().size() > 0){
+                orderEntity.setOrders(order.getOrders().stream().map(x -> orderLineMapper.toOrderLineEntity(x)).collect(Collectors.toList()));
+            }
             return orderMapper.toOrderDto(orderRepositoryCrud.save(orderEntity));
         }catch(Exception e){
             LOG.info("error : " + e.getMessage());
